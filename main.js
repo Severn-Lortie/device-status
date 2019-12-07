@@ -183,4 +183,4 @@ app.delete('/devices/:id', (req, res) => {
   })
 })
 
-app.listen(process.env.PORT)
+app.listen(process.env.PORT || 8080)
