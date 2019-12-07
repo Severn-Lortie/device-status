@@ -9,7 +9,7 @@ const getDevices = async (url) => {
     return result;
 }
 
-getDevices('http://localhost:8080/devices').then((result) => {
+getDevices('https://device-status.herokuapp.com/devices').then((result) => {
     const deviceTable = document.getElementById('device-table');
     for (let key in result.data) {
         const device = result.data[key];
