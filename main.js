@@ -101,7 +101,7 @@ app.post('/devices/alive/:id', (req, res) => {
   })
 })
 
-app.post('/devices/create/:id', (req, res) => {
+app.post('/devices/:id', (req, res) => {
 
   // load in JSON file
   fs.readFile('./devices.json', (err, data) => {
