@@ -22,7 +22,8 @@ const getPingTimes = () => {
     year: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
-    hour12: true
+    hour12: true,
+    timeZone: 'America/New_York'
   })
 
   // milliseconds for ping time
