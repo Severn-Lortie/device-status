@@ -75,7 +75,7 @@ app.post('/devices/alive/:id', (req, res) => {
       // check if the device exists
       if (devices[req.params.id]) {
         // add the new status
-        devices[req.params.id].status = true;
+        devices[req.params.id].status = req.body.status;
 
         // add the ping time
         const timings = getPingTimes();
