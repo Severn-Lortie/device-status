@@ -35,7 +35,7 @@ const getPingTimes = () => {
   }
 }
 
-const makeOffline = () => {
+const makeOffline = (cb) => {
 
   const now = new Date();
 
@@ -54,7 +54,9 @@ const makeOffline = () => {
 
     // update the device statuses
     fs.writeFile('./devices.json', JSON.stringify(devices), (err) => {
-      if (err) console.log('Problem updating device statuses: ', err.message);
+      // call the callback with data or err
+      if (err) cb(err);
+      else cb();
     })
   })
 }
@@ -144,13 +146,17 @@ app.post('/devices/:id', (req, res) => {
 })
 
 app.get('/devices', (req, res) => {
-  makeOffline();
-  fs.readFile('./devices.json', (err, data) => {
-    if (err) res.status(500).message({
-      error: 'Unable to read device list'
-    });
+  makeOffline((err) => {
+    if (err) res.status(500).json({message: 'There was an issue updating device status'});
     else {
-      res.status(200).json(JSON.parse(data));
+      fs.readFile('./devices.json', (err, data) => {
+        if (err) res.status(500).message({
+          error: 'Unable to read device list'
+        });
+        else {
+          res.status(200).json(JSON.parse(data));
+        }
+      })
     }
   })
 })
@@ -159,25 +165,33 @@ app.delete('/devices/:id', (req, res) => {
 
   // load in JSON file
   fs.readFile('./devices.json', (err, data) => {
-    if (err) res.status(500).json({error: 'Devices could not be loaded'});
+    if (err) res.status(500).json({
+      error: 'Devices could not be loaded'
+    });
     else {
 
       const devices = JSON.parse(data);
-      
+
       // check if device exists
       if (devices[req.params.id]) {
         // delete the device
         delete devices[req.params.id];
-        
+
         fs.writeFile('./devices.json', JSON.stringify(devices), (err) => {
-          if (err) res.status(500).json({error: 'Unable to delete device'})
+          if (err) res.status(500).json({
+            error: 'Unable to delete device'
+          })
           else {
-            res.status(200).json({message: 'Device deleted'})
+            res.status(200).json({
+              message: 'Device deleted'
+            })
           }
         })
-        
+
       } else {
-        res.status(404).json({error: 'Device does not exist'})
+        res.status(404).json({
+          error: 'Device does not exist'
+        })
       }
     }
   })
