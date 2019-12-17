@@ -3,6 +3,24 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const firebaseAdmin = require('firebase-admin')
 
+// initalize firebase
+// check if the enviroment variable for auth is set
+let firebase;
+if (process.env.FIREBASE_CONFIG) {
+  // initalize the app with the contents of the enviroment var
+  admin.initializeApp({
+    credential: admin.credential.cert(JSON.parse(process.env.FIREBASE_CONFIG)),
+    databaseURL: 'https://cta-display.firebaseio.com/'
+  });
+} else {
+  // otherwise load from a local file
+  admin.initializeApp({
+    credential: JSON.parse(require('./firebase-key.json')),
+    databaseURL: 'https://cta-display.firebaseio.com/'
+  });
+}
+
+
 const app = express();
 app.use(bodyParser.json()); // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
