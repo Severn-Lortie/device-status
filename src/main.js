@@ -64,12 +64,12 @@ const getUpdatedDevices = async () => {
   for (deviceKey in devices) {
     const lastPingDate = new Date(devices[deviceKey].lastPing); // turn the time string into a date object
     if ((Date.now() - lastPingDate.getTime()) > EXPIREY_TIME) {
-      
+      console.log("applyig false")
       // append a status and set it to false
       devices[deviceKey].status = false;
     } else {
       // otherwise, the device must be alive
-      console.log("applyig falsity")
+      console.log("applyig true")
       devices[deviceKey].status = true;
     }
   }
