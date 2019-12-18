@@ -63,7 +63,7 @@ const getUpdatedDevices = async () => {
   // loop through them and find devices which have expired
   for (deviceKey in devices) {
     const lastPingDate = new Date(devices[deviceKey].lastPing); // turn the time string into a date object
-    console.log('comparision: ' (Date.now() - lastPingDate.getTime()) > EXPIREY_TIME);
+    console.log('comparision: ' + (Date.now() - lastPingDate.getTime()) > EXPIREY_TIME);
     if ((Date.now() - lastPingDate.getTime()) > EXPIREY_TIME) {
       
       // append a status and set it to false
