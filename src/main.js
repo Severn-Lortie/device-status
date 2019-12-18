@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
 const EXPIREY_TIME = 1.8e+6;
 
 // check if the enviroment variable for auth is set
-if (process.env.FIREBASE_CONFIG) {
+if (process.env.FIREBASECONFIG) {
 
   // initalize the app with the contents of the enviroment var
   firebaseAdmin.initializeApp({
