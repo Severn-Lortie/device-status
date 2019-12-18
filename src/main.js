@@ -20,7 +20,7 @@ if (process.env.FIREBASECONFIG) {
 
   // initalize the app with the contents of the enviroment var
   firebaseAdmin.initializeApp({
-    credential: firebaseAdmin.credential.cert(JSON.parse(process.env.FIREBASE_CONFIG)),
+    credential: firebaseAdmin.credential.cert(JSON.parse(process.env.FIREBASECONFIG)),
     databaseURL: 'https://cta-display.firebaseio.com/'
   });
 } else {
