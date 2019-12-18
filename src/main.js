@@ -26,7 +26,7 @@ if (process.env.FIREBASE_CONFIG) {
 } else {
   // local file with firebase creds
   let localCreds = require('./firebase-key.json');
-  
+
   // otherwise load from a local file
   firebaseAdmin.initializeApp({
     credential: firebaseAdmin.credential.cert(localCreds),
@@ -60,11 +60,11 @@ const getUpdatedDevices = async () => {
   // get every device
   const snapshot = await root.once('value');
   const devices = snapshot.val();
-  
+
   // loop through them and find devices which have expired
   for (deviceKey in devices) {
     const lastPingDate = new Date(devices[deviceKey].lastPing); // turn the time string into a date object
-    if ( (Date.now() - lastPingDate.getTime()) > EXPIREY_TIME ) {
+    if ((Date.now() - lastPingDate.getTime()) > EXPIREY_TIME) {
       // append a status and set it to false
       devices[deviceKey].status = false;
     } else {
@@ -86,7 +86,9 @@ app.post('/devices/alive/:id', async (req, res) => {
         lastPing: getPingTime() // last ping time string
       }
     })
-    res.json({message: "Device status updated"});
+    res.json({
+      message: "Device status updated"
+    });
   } catch (error) {
     res.json({
       // legacy support for announcement display means 'error' must be used
@@ -100,18 +102,24 @@ app.get('/devices', async (req, res) => {
   try {
     const devices = await getUpdatedDevices(); // get the updated list of devices
     res.json(devices);
-  } catch(error) {
-    res.status(500).json({message: error.message});
+  } catch (error) {
+    res.status(500).json({
+      message: error.message
+    });
   }
 })
 
 app.delete('/devices/:id', async (req, res) => {
   const deviceRef = database.ref(`/${req.params.id}`);
   try {
-   await deviceRef.remove();
-   res.json({message: 'Device has been deleted'})
+    await deviceRef.remove();
+    res.json({
+      message: 'Device has been deleted'
+    })
   } catch (error) {
-    res.status(500).json({message: error.message});
+    res.status(500).json({
+      message: error.message
+    });
   }
 })
 
