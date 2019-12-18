@@ -35,24 +35,6 @@ if (process.env.FIREBASECONFIG) {
 }
 const database = firebaseAdmin.database();
 
-const getPingTime = () => {
-  const now = new Date();
-
-  // assemble last ping string
-  const timeString = now.toLocaleDateString('en-US', {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true,
-    timeZone: 'America/New_York'
-  })
-
-  return timeString;
-}
-
 const getUpdatedDevices = async () => {
   const root = database.ref('/');
   // TODO: error handeling
@@ -62,14 +44,12 @@ const getUpdatedDevices = async () => {
 
   // loop through them and find devices which have expired
   for (deviceKey in devices) {
-    const lastPingDate = new Date(devices[deviceKey].lastPing); // turn the time string into a date object
-    if ((Date.now() - lastPingDate.getTime()) > EXPIREY_TIME) {
+    if ((Date.now() - devices[deviceKey].lastPing) > EXPIREY_TIME) {
       console.log("applyig false")
       // append a status and set it to false
       devices[deviceKey].status = false;
     } else {
       // otherwise, the device must be alive
-      console.log("applyig true")
       devices[deviceKey].status = true;
     }
   }
@@ -84,7 +64,7 @@ app.post('/devices/alive/:id', async (req, res) => {
   try {
     await root.update({
       [req.params.id]: {
-        lastPing: getPingTime() // last ping time string
+        lastPing: Date.now()
       }
     })
     res.json({

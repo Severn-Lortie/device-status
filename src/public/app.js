@@ -32,7 +32,21 @@ getDevices('https://device-status.herokuapp.com/devices').then((result) => {
         }
         
         const deviceLastPing = document.createElement('td');
-        deviceLastPing.innerHTML = device.lastPing;
+
+        // format to locale time string
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone; // user timezone
+        const timeString = new Date(device.lastPing).toLocaleDateString('en-US',{
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            timeZone: tz,
+            hour12: true
+        })
+
+        deviceLastPing.innerHTML = timeString;
 
         // append
         deviceRow.appendChild(deviceName);
