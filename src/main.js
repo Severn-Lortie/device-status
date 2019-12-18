@@ -56,7 +56,6 @@ const getPingTime = () => {
 const getUpdatedDevices = async () => {
   const root = database.ref('/');
   // TODO: error handeling
-
   // get every device
   const snapshot = await root.once('value');
   const devices = snapshot.val();
@@ -64,7 +63,9 @@ const getUpdatedDevices = async () => {
   // loop through them and find devices which have expired
   for (deviceKey in devices) {
     const lastPingDate = new Date(devices[deviceKey].lastPing); // turn the time string into a date object
+    console.log('comparision: ' (Date.now() - lastPingDate.getTime()) > EXPIREY_TIME);
     if ((Date.now() - lastPingDate.getTime()) > EXPIREY_TIME) {
+      
       // append a status and set it to false
       devices[deviceKey].status = false;
     } else {
@@ -72,6 +73,7 @@ const getUpdatedDevices = async () => {
       devices[deviceKey].status = true;
     }
   }
+  console.log(JSON.stringify(devices));
   return devices;
 }
 
