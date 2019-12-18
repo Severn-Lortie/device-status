@@ -15,17 +15,18 @@ app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
 /* initalize firebase */
 const EXPIREY_TIME = 1.8e+6;
 
-// local file with firebase creds
-let localCreds = require('./firebase-key.json');
-
 // check if the enviroment variable for auth is set
 if (process.env.FIREBASE_CONFIG) {
+
   // initalize the app with the contents of the enviroment var
   firebaseAdmin.initializeApp({
     credential: firebaseAdmin.credential.cert(JSON.parse(process.env.FIREBASE_CONFIG)),
     databaseURL: 'https://cta-display.firebaseio.com/'
   });
 } else {
+  // local file with firebase creds
+  let localCreds = require('./firebase-key.json');
+  
   // otherwise load from a local file
   firebaseAdmin.initializeApp({
     credential: firebaseAdmin.credential.cert(localCreds),
