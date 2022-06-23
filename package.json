@@ -14,7 +14,7 @@
     "express": "^4.17.1",
     "firebase-admin": "^8.8.0",
     "flatted": "^2.0.1",
-    "jsdom": "^15.2.1",
+    "jsdom": "^16.5.0",
     "save": "^2.4.0"
   }
 }
